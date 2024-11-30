@@ -82,13 +82,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gabrielsousa$default',
-        'USER': 'gabrielsousa',
+        'USER': 'root',
         'PASSWORD': 'klk689423',
-        'HOST': 'gabrielsousa.mysql.pythonanywhere-services.com',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
+
 
 # DATABASES = {
 #     'default': dj_database_url.config(
