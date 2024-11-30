@@ -1,0 +1,77 @@
+# Python bytecode
+*.pyc
+*.pyo
+__pycache__/
+
+# Django specific
+*.log
+*.pot
+*.pyc
+db.sqlite3
+instance/
+media/
+staticfiles/
+.env
+.env.* 
+
+# macOS specific
+.DS_Store
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+*.iml
+
+# Environment folders
+venv/
+env/
+ENV/
+
+# Node modules (if you're using npm/yarn for frontend)
+node_modules/
+
+# Celery and Task Queues
+celerybeat-schedule
+*.pid
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+*.lcov
+
+# Testing
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Migrations (ignore generated files but keep the migration scripts)
+*/migrations/*.pyc
+*/migrations/__pycache__/
+
+# Temporary files
+*.swp
+*.swo
+*.~*
+*.tmp
+*.bak
+*.orig
+*.old
+
+# Output files
+*.out
+*.log
+
+# Gunicorn socket file
+gunicorn.sock
+
+# Security
+secrets.json
+
+# MyPy type checker reports
+.mypy_cache/
+dmypy.json
+dmypy.log
