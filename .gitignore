@@ -75,3 +75,6 @@ secrets.json
 .mypy_cache/
 dmypy.json
 dmypy.log
+
+*/settings.py
+backend/core/settings.py
