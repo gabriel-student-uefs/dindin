@@ -4,6 +4,10 @@ entrypoint: gunicorn -b :$PORT core.wsgi:application
 service: dinsage
 
 handlers:
+- url: /static              # new
+  static_dir: staticfiles/  # new
+- url: /media               # new
+  static_dir: mediafiles/   # new
 - url: /.*
   script: auto
 

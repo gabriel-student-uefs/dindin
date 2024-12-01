@@ -16,6 +16,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 import io
 from google.cloud import secretmanager
+from google.oauth2 import service_account
+
 
 # Initialize environment variables
 env = environ.Env(DEBUG=(bool, False))
@@ -62,6 +64,18 @@ if APPENGINE_URL:
 else:
     ALLOWED_HOSTS = ['*']
 
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'gcpCredentials.json')
+)
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = env('GS_BUCKET_NAME')
+
+
+
+
 ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -80,6 +94,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -211,9 +226,20 @@ USE_TZ = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
