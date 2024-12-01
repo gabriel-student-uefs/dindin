@@ -1,0 +1,19 @@
+{
+  "name": "dindin",
+  "version": "1.0.0",
+  "description": "A gamified personal finance application that helps users build financial health through interactive challenges, goal tracking, and smart money strategies. This repository contains the front-end and back-end codebases, collaboratively powering a seamless and engaging user experience.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "Gabriel Amaral Sousa",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
