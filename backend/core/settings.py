@@ -131,16 +131,31 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': env('DB_ENGINE', default='django.db.backends.mysql'),
-        'NAME': env('DB_NAME', default='default_db_name'),
-        'USER': env('DB_USER', default='default_user'),
-        'PASSWORD': env('DB_PASSWORD', default='default_password'),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='3306'),
+# Determine which database to use based on the environment variable
+USE_LOCAL_DB = env('USE_LOCAL_DB', default=True)
+
+if USE_LOCAL_DB:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': env('LOCAL_DB_NAME', default='default_db_name'),
+            'USER': env('LOCAL_DB_USER', default='default_user'),
+            'PASSWORD': env('LOCAL_DB_PASSWORD', default='default_password'),
+            'HOST': env('LOCAL_DB_HOST', default='27.0.0.1'),
+            'PORT': env('LOCAL_DB_PORT', default='3366'),
+        }
     }
-}
+else :
+    DATABASES = {
+        'default': {
+            'ENGINE': env('DB_ENGINE', default='django.db.backends.mysql'),
+            'NAME': env('DB_NAME', default='default_db_name'),
+            'USER': env('DB_USER', default='default_user'),
+            'PASSWORD': env('DB_PASSWORD', default='default_password'),
+            'HOST': env('DB_HOST', default='localhost'),
+            'PORT': env('DB_PORT', default='3306'),
+        }
+    }
 
 
 # Password validation
