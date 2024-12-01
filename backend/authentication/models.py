@@ -35,6 +35,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff =  models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+
+    #Fields for gamification
+    xp = models.IntegerField(default=0)
+    level = models.IntegerField(default=1)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -49,6 +53,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         return {
             'refresh': str(refresh),
             'access': str(refresh.access_token)
-        }   
+        }
     
+    def add_xp(self, amount):
+        self.xp += amount
+        self.check_level_up()
+
+    def check_level_up(self):
+        level_up_xp = self.calculate_level_up_xp()
+        while self.xp >= level_up_xp:
+            self.level += 1
+            self.xp -= level_up_xp
+            level_up_xp = self.calculate_level_up_xp()
+
+    def calculate_level_up_xp(self):
+        # required XP increases by 50% each level
+        return 100 * (1.5 ** (self.level - 1))
     
+    def xp_for_next_level(self):
+        return self.calculate_level_up_xp() - self.xp

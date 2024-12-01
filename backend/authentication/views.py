@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, response, status, views
+from rest_framework import generics, response, status, views, permissions
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.sites.shortcuts import get_current_site
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
@@ -7,7 +7,7 @@ from drf_spectacular.types import OpenApiTypes
 from django.urls import reverse
 from django.conf import settings
 from .utils import Util
-from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer, ResetPasswordEmailSerializer, SetNewPasswordAPIViewSerializer
+from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer, ResetPasswordEmailSerializer, SetNewPasswordAPIViewSerializer, UserProfileSerializer, IncreaseXPSerializer
 from .models import User
 from .renderers import UserRenderer
 import jwt
@@ -144,3 +144,24 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return response.Response({'success':True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
+    
+
+class UserProfileView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class IncreaseXPView(generics.GenericAPIView):
+    serializer_class = IncreaseXPSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        xp_amount = serializer.validated_data['xp']
+        user = request.user
+        user.add_xp(xp_amount)
+        user.save()
+        return response.Response({'success': True, 'message': 'XP increased successfully', 'new_xp': user.xp, 'new_level': user.level}, status=status.HTTP_200_OK)

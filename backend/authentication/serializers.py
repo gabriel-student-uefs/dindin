@@ -121,3 +121,22 @@ class SetNewPasswordAPIViewSerializer(serializers.Serializer):
         except Exception as e:
             raise AuthenticationFailed('The reset link is invalid', 401)
         return super().validate(attrs)
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    xp_for_next_level = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'is_verified', 'is_active', 'is_staff', 'created_at', 'updated_at', 'xp', 'level', 'xp_for_next_level']
+
+    def get_xp_for_next_level(self, obj):
+        return obj.xp_for_next_level()
+
+class IncreaseXPSerializer(serializers.Serializer):
+    xp = serializers.IntegerField()
+
+    def validate_xp(self, value):
+        if value < 0:
+            raise serializers.ValidationError("XP value must be positive.")
+        return value
