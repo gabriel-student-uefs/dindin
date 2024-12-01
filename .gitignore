@@ -77,3 +77,4 @@ dmypy.log
 
 */settings.py
 backend/core/settings.py
+gcpCredentials.json
