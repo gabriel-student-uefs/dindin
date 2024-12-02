@@ -28,6 +28,8 @@ venv/
 env/
 ENV/
 */venv/
+backend/venv/
+
 
 # Node modules (if you're using npm/yarn for frontend)
 node_modules/
