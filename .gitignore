@@ -27,6 +27,7 @@ staticfiles/
 venv/
 env/
 ENV/
+*/venv/
 
 # Node modules (if you're using npm/yarn for frontend)
 node_modules/
