@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import PrivateRoute from './components/PrivateRoute';
+import MainLayout from './components/MainLayout';
+import { AuthProvider } from './context/AuthContext';
 import './App.css';
-
+import TransactionList from './pages/TransactionList';
+import Ranking from './pages/Ranking';
 function App() {
   return (
     <Router>
@@ -18,11 +20,28 @@ function App() {
             path="/home"
             element={
               <PrivateRoute>
-                <Home />
+                <MainLayout>
+                  <Home />
+                </MainLayout>
               </PrivateRoute>
             }
           />
-          {/* Add other private routes here */}
+          <Route
+            path="/transactions"
+            element={
+              <MainLayout>
+                <TransactionList />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/ranking"
+            element={
+              <MainLayout>
+                <Ranking />
+              </MainLayout>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>

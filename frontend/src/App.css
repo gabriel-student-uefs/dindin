@@ -1,0 +1,65 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff; /* Adjust as needed */
+    z-index: 1000; /* Ensure it is above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
+}
+
+.main-content {
+    flex: 1;
+    /* margin-top: 60px; Adjust based on the height of the Header component */
+    margin-bottom: 60px; /* Adjust based on the height of the Pagination component */
+    overflow-y: auto;
+}
+
+.pagination-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff; /* Adjust as needed */
+    padding: 10px 0; /* Adjust as needed */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
+    z-index: 1000; /* Ensure it is above other elements */
+  }
+  
+  .icon-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dash {
+    position: absolute;
+    top: -15px; /* Adjust as needed */
+    width: 30px; /* Adjust as needed */
+    height: 4px; /* Adjust as needed */
+    background-color: #1e2b48; /* Adjust as needed */
+    border-radius: 2px; /* Optional: Add rounded corners */
+  }
+
+
+  .income-border {
+    border: .1px solid #5cc7a9;
+  }
+  
+  .expense-border {
+    border: .1px solid #d3557d;
+  }
+
+
+  .success-color{
+    color: #5cc7a9;
+  }
+  
+  .danger-color {
+    color: #d3557d;
+  }
