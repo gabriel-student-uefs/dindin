@@ -9,6 +9,7 @@ import {
   faEdit,
   faTrashAlt,
   faQuestionCircle,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 const TransactionList = () => {
@@ -88,8 +89,8 @@ const TransactionList = () => {
           onClick={handleCreateClick}
           style={{ backgroundColor: "#51b8bd", borderColor: "#51b8bd" }}
         >
-          Adicionar Transação
-          <FontAwesomeIcon icon="plus" className="me-2" />
+          Nova Transação
+          <FontAwesomeIcon icon={faPlus} className="me-2 mx-2" />
         </Button>
       </div>
 

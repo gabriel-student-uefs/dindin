@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import FinancialGoal, Transaction
+from authentication.models import User
 
 class FinancialGoalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +21,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         validated_data['user'] = user
         return super().create(validated_data)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'level', 'xp']
