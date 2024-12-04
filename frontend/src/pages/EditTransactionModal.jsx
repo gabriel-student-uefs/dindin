@@ -146,9 +146,9 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               variant="primary"
               type="submit"
               style={{
-                borderColor: "#51b8bd",
-                // color: "#51b8bd",
-                backgroundColor: "#51b8bd",
+                borderColor: "#20c997",
+                // color: "#20c997",
+                backgroundColor: "#20c997",
               }}
               size="sm"
             >

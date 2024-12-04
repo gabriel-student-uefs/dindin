@@ -16,7 +16,7 @@ const Header = () => {
       <style>
         {`
           .custom-progress-bar .progress-bar {
-            background-color: #5cc7a9 !important;
+            background-color: #20c997 !important;
           }
         `}
       </style>

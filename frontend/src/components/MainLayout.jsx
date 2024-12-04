@@ -4,7 +4,7 @@ import Pagination from './Pagination';
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="layout-container">
+    <div className="layout-container" style={{background: "#fdfdfd"}}>
       <Header className="header" />
       <div className="main-content px-4 py-5">
         {children}

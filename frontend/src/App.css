@@ -8,7 +8,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #fff; /* Adjust as needed */
+    background-color: #fdfdfd; /* Adjust as needed */
     z-index: 1000; /* Ensure it is above other elements */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
 }
@@ -24,7 +24,7 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #fff; /* Adjust as needed */
+    background-color: #fdfdfd; /* Adjust as needed */
     padding: 10px 0; /* Adjust as needed */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
     z-index: 1000; /* Ensure it is above other elements */
@@ -45,7 +45,27 @@
     background-color: #1e2b48; /* Adjust as needed */
     border-radius: 2px; /* Optional: Add rounded corners */
   }
-
+/* 
+  .user-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .user-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+   */
+  /* .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+ */
 
   .income-border {
     border: .1px solid #5cc7a9;
@@ -62,4 +82,99 @@
   
   .danger-color {
     color: #d3557d;
+  }
+
+  .home-container {
+    padding: 20px;
+  }
+  
+  .logo {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .icon {
+    font-size: 30px;
+    color: #1e2b48;
+  }
+  
+  .info-card {
+    margin-top: 20px;
+  }
+
+
+  .home-container {
+    padding: 20px;
+    background: #fdfdfd;
+    min-height: 100vh;
+  }
+  
+  .logo {
+    max-width: 150px;
+    /* margin: auto; */
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+  }
+  
+  .trophy-icon {
+    color: #f4b400;
+  }
+  
+  .coins-icon {
+    color: #ffba08;
+  }
+  
+  .ranking-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .ranking-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1e2b48;
+  }
+  
+  .balance-container {
+    text-align: center;
+  }
+  
+  .balance-amount {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .balance-amount.positive {
+    color: #20c997;
+  }
+  
+  .balance-amount.negative {
+    color: #d3557d;
+  }
+  
+  .info-card {
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    padding: 20px;
+  }
+  
+  .info-card-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }

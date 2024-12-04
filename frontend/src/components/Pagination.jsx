@@ -9,7 +9,7 @@ const Pagination = () => {
   const location = useLocation();
 
   return (
-    <Container fluid className="pagination-container py-4">
+    <Container fluid className="pagination-container py-4"  style={{background: "#fdfdfd"}}>
       <Row>
         <Col className="icon-container">
           {location.pathname === '/transactions' && <div className="dash"></div>}

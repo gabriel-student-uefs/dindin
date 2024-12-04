@@ -87,7 +87,7 @@ const TransactionList = () => {
         <Button
           variant="primary"
           onClick={handleCreateClick}
-          style={{ backgroundColor: "#51b8bd", borderColor: "#51b8bd" }}
+          style={{ backgroundColor: "#20c997", borderColor: "#20c997" }}
         >
           Nova Transação
           <FontAwesomeIcon icon={faPlus} className="me-2 mx-2" />
@@ -98,6 +98,7 @@ const TransactionList = () => {
         {transactions.map((transaction) => (
           <Col key={transaction.id} sm={12} md={6} lg={4} className="mb-3">
             <Card
+             style={{background: "#fdfdfd"}}
               className={`${
                 transaction.type == "income"
                   ? "income-border"
@@ -135,7 +136,7 @@ const TransactionList = () => {
                     style={{
                       borderColor: "#1e2b48",
                       color: "#1e2b48",
-                      backgroundColor: "white",
+                      backgroundColor: "#fdfdfd",
                     }}
                     size="sm"
                     onClick={() => handleEditClick(transaction)}
@@ -147,7 +148,7 @@ const TransactionList = () => {
                     style={{
                       borderColor: "#d3557d",
                       color: "#d3557d",
-                      backgroundColor: "white",
+                      backgroundColor: "#fdfdfd",
                     }}
                     size="sm"
                     onClick={() => handleDeleteClick(transaction.id)}
