@@ -29,7 +29,11 @@ class TransactionListCreateAPIView(generics.ListCreateAPIView):
         return Transaction.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        transaction = serializer.save(user=self.request.user)
+        user = self.request.user
+        user.add_xp(50)
+        user.save()
+
 
 class TransactionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer

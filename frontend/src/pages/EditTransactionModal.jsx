@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 import { API_URL, transactionTypes } from "../constants";
+import AuthContext from "../context/AuthContext";
+import { getUserProfile } from "../services/authService";
 
 const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
     amount: "",
     description: "",
   });
+  const { setUser } = useContext(AuthContext);
 
   const [transactionTypeOptions, setTransactionsTypeOptions] = useState([]);
 
@@ -67,11 +70,23 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
           }
         );
       } else {
-        await axios.post(`${API_URL}/finance/transactions/`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios
+          .post(`${API_URL}/finance/transactions/`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(() => {
+            getUserProfile(token).then((data) => {
+              setUser(data);
+            });
+          });
+
+        // await axios.post(`${API_URL}/finance/transactions/`, formData, {
+        // headers: {
+        // Authorization: `Bearer ${token}`,
+        // },
+        // });
       }
       onSave();
       onClose();
