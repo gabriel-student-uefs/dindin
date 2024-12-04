@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import { API_URL } from '../constants'; // Adjust the path as necessary
 
 export const loginUser = async (email, password) => {

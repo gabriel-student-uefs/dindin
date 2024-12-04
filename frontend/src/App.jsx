@@ -1,14 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import PrivateRoute from './components/PrivateRoute';
-import MainLayout from './components/MainLayout';
-import { AuthProvider } from './context/AuthContext';
-import './App.css';
-import TransactionList from './pages/TransactionList';
-import Ranking from './pages/Ranking';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+
+// Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import PrivateRoute from "./components/PrivateRoute";
+import MainLayout from "./components/MainLayout";
+import TransactionList from "./pages/TransactionList";
+import Ranking from "./pages/Ranking";
+import Start from "./pages/Start";
+
+import "./App.css";
+
 function App() {
   return (
     <Router>
@@ -16,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Start />} />
           <Route
             path="/home"
             element={
@@ -29,17 +35,21 @@ function App() {
           <Route
             path="/transactions"
             element={
-              <MainLayout>
-                <TransactionList />
-              </MainLayout>
+              <PrivateRoute>
+                <MainLayout>
+                  <TransactionList />
+                </MainLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path="/ranking"
             element={
-              <MainLayout>
-                <Ranking />
-              </MainLayout>
+              <PrivateRoute>
+                <MainLayout>
+                  <Ranking />
+                </MainLayout>
+              </PrivateRoute>
             }
           />
         </Routes>

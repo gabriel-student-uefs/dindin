@@ -3,24 +3,41 @@ import axios from "axios";
 import EditTransactionModal from "./EditTransactionModal";
 import AuthContext from "../context/AuthContext";
 import { API_URL, transactionTypes } from "../constants";
-import { Button, Card, Row, Col } from "react-bootstrap";
+import { Button, Card, Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faTrashAlt,
   faQuestionCircle,
   faPlus,
+  faFilter,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState([]);
+  const [filterCategories, setFilterCategories] = useState([]);
+  const [totalFilteredAmount, setTotalFilteredAmount] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
     fetchTransactions();
   }, [token]);
+
+  useEffect(() => {
+    filterTransactions();
+  }, [searchTerm, filterType, filterCategories, transactions]);
+
+  useEffect(() => {
+    calculateTotalFilteredAmount();
+  }, [filteredTransactions]);
 
   const fetchTransactions = async () => {
     try {
@@ -33,6 +50,55 @@ const TransactionList = () => {
     } catch (error) {
       console.error("Error fetching transactions:", error);
     }
+  };
+
+  const filterTransactions = () => {
+    let filtered = transactions;
+
+    if (searchTerm) {
+      filtered = filtered.filter((transaction) => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+          transaction.description.toLowerCase().includes(searchLower) ||
+          transaction.amount.toString().toLowerCase().includes(searchLower) ||
+          transaction.type.toLowerCase().includes(searchLower) ||
+          transaction.category.toLowerCase().includes(searchLower)
+        );
+      });
+    }
+
+    if (filterType.length > 0) {
+      filtered = filtered.filter((transaction) =>
+        filterType.some((type) => transaction.type === type.value)
+      );
+    }
+
+    if (filterCategories.length > 0) {
+      filtered = filtered.filter((transaction) =>
+        filterCategories.some(
+          (category) => transaction.category === category.value
+        )
+      );
+    }
+
+    setFilteredTransactions(filtered);
+  };
+
+  const calculateTotalFilteredAmount = () => {
+    let total = 0;
+    filteredTransactions.forEach((transaction) => {
+      const amount = parseFloat(transaction.amount);
+      if (!isNaN(amount)) {
+        if (transaction.type === "income") {
+          total += amount;
+        } else if (transaction.type === "expense") {
+          total -= amount;
+        }
+      } else {
+        console.error("Invalid transaction amount:", transaction.amount);
+      }
+    });
+    setTotalFilteredAmount(total);
   };
 
   const handleEditClick = (transaction) => {
@@ -58,12 +124,23 @@ const TransactionList = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFilterTypeSelect = (selectedOptions) => {
+    setFilterType(selectedOptions || []);
+  };
+
+  const handleFilterCategorySelect = (selectedOptions) => {
+    setFilterCategories(selectedOptions || []);
+  };
+
   const getTransactionIcon = (type, category) => {
     const transactionType =
       Array.isArray(transactionTypes[type]) &&
       transactionTypes[type].find((t) => t.name === category);
 
-    console.log(type, category, transactionType);
     return transactionType ? transactionType.icon : faQuestionCircle;
   };
 
@@ -74,33 +151,104 @@ const TransactionList = () => {
     }).format(amount);
   };
 
+  const typeOptions = [
+    { value: "income", label: "Ganho" },
+    { value: "expense", label: "Despesa" },
+  ];
+
+  const categoryOptions = Object.keys(transactionTypes).flatMap((type) =>
+    transactionTypes[type].map((category) => ({
+      value: category.name,
+      label: category.name,
+    }))
+  );
+
   return (
     <div className="mt-4">
-      <h1
-        className="text-center mb-4"
-        style={{ fontWeight: "bold", color: "#343a40" }}
-      >
+      <h1 className="text-center mb-4" style={{ color: "#343a40" }}>
         Transações
       </h1>
-      <div className="text-center" shadow-sm>
-        {" "}
-        <Button
-          variant="primary"
-          onClick={handleCreateClick}
-          style={{ backgroundColor: "#20c997", borderColor: "#20c997" }}
-        >
-          Nova Transação
-          <FontAwesomeIcon icon={faPlus} className="me-2 mx-2" />
-        </Button>
-      </div>
+
+      <Col md={8} className="text-end">
+        <h6 className="d-inline-block ms-3">
+          Total: {formatCurrency(totalFilteredAmount)}
+        </h6>
+      </Col>
+
+      <Row className="mb-3">
+        <Col md={4} className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Pesquisar transações"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </Col>
+        <Col md={8} className="text-end">
+          <Button
+            variant="primary"
+            onClick={handleCreateClick}
+            style={{ backgroundColor: "#20c997", borderColor: "#20c997" }}
+            className="mx-2"
+          >
+            Nova Transação
+            <FontAwesomeIcon icon={faPlus} className="me-2 mx-2" />
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setShowFilters(!showFilters)}
+            style={{ backgroundColor: "#6c757d", borderColor: "#6c757d" }}
+          >
+            {showFilters ? (
+              <>
+                Filtrar
+                <FontAwesomeIcon icon={faTimes} className="me-2 mx-2" />
+              </>
+            ) : (
+              <>
+                Filtrar
+                <FontAwesomeIcon icon={faFilter} className="me-2 mx-2" />
+              </>
+            )}
+          </Button>
+        </Col>
+      </Row>
+      {showFilters && (
+        <Row className="mb-3">
+          <Col md={4}>
+            <Form.Label style={{ fontSize: "0.875rem", marginTop: "1rem" }}>
+              Tipo
+            </Form.Label>
+            <Select
+              isMulti
+              options={typeOptions}
+              placeholder="Filtrar por Tipo"
+              onChange={handleFilterTypeSelect}
+              value={filterType}
+            />
+          </Col>
+          <Col md={4}>
+            <Form.Label style={{ fontSize: "0.875rem", marginTop: "1rem" }}>
+              Categoria
+            </Form.Label>
+            <Select
+              isMulti
+              options={categoryOptions}
+              placeholder="Filtrar por Categoria"
+              onChange={handleFilterCategorySelect}
+              value={filterCategories}
+            />
+          </Col>
+        </Row>
+      )}
 
       <Row className="mt-3">
-        {transactions.map((transaction) => (
+        {filteredTransactions.map((transaction) => (
           <Col key={transaction.id} sm={12} md={6} lg={4} className="mb-3">
             <Card
-             style={{background: "#fdfdfd"}}
+              style={{ background: "#fdfdfd" }}
               className={`${
-                transaction.type == "income"
+                transaction.type === "income"
                   ? "income-border"
                   : "expense-border"
               } shadow-sm`}
@@ -161,6 +309,7 @@ const TransactionList = () => {
           </Col>
         ))}
       </Row>
+
       {isModalOpen && (
         <EditTransactionModal
           transaction={selectedTransaction}

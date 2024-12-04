@@ -92,12 +92,25 @@
     width: 150px;
     height: 150px;
   }
-  
+
+  .logo-2 {
+    width: 280px;
+    height: 280px;
+    margin-top: 70px;
+  }
+
+
   .icon {
     font-size: 30px;
     color: #1e2b48;
   }
   
+  .icon-2 {
+    font-size: 50px;
+    margin:10px;
+    /* color: #1e2b48; */
+  }
+
   .info-card {
     margin-top: 20px;
   }

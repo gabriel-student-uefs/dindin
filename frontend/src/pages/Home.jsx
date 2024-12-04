@@ -64,7 +64,7 @@ function Home() {
       <Row className="text-center mt-4">
         <Col>
           <FontAwesomeIcon icon={faTrophy} className="icon trophy-icon" />
-          <h2 className="ranking-title">Your Ranking</h2>
+          <h2 className="ranking-title">Sua Posição</h2>
           <h1 className="ranking-number"># {ranking}</h1>
         </Col>
       </Row>
