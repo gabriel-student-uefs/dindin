@@ -3,7 +3,7 @@ import axios from "axios";
 import EditTransactionModal from "./EditTransactionModal";
 import AuthContext from "../context/AuthContext";
 import { API_URL, transactionTypes } from "../constants";
-import { Button, Card, Row, Col, Form } from "react-bootstrap";
+import { Button, Card, Row, Col, Form, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
@@ -25,6 +25,7 @@ const TransactionList = () => {
   const [filterCategories, setFilterCategories] = useState([]);
   const [totalFilteredAmount, setTotalFilteredAmount] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const TransactionList = () => {
   }, [filteredTransactions]);
 
   const fetchTransactions = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/finance/transactions/`, {
         headers: {
@@ -49,6 +51,8 @@ const TransactionList = () => {
       setTransactions(response.data);
     } catch (error) {
       console.error("Error fetching transactions:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,6 +116,7 @@ const TransactionList = () => {
   };
 
   const handleDeleteClick = async (id) => {
+    setLoading(true);
     try {
       await axios.delete(`${API_URL}/finance/transactions/${id}/`, {
         headers: {
@@ -121,6 +126,8 @@ const TransactionList = () => {
       fetchTransactions();
     } catch (error) {
       console.error("Error deleting transaction:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -168,6 +175,13 @@ const TransactionList = () => {
       <h1 className="text-center mb-4" style={{ color: "#343a40" }}>
         Transações
       </h1>
+      {loading && (
+        <div className="loading-overlay">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      )}
 
       <Col md={8} className="text-end">
         <h6 className="d-inline-block ms-3">

@@ -7,6 +7,7 @@ import {
   Col,
   Stack,
   FloatingLabel,
+  Spinner,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,6 +19,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -40,6 +42,7 @@ function Register() {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/auth/register/`, {
         username,
@@ -63,6 +66,8 @@ function Register() {
         alert("Falha no registro. Por favor, tente novamente.");
       }
       console.error("Erro durante o registro:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +76,13 @@ function Register() {
       fluid
       className="d-flex justify-content-center align-items-center vh-100"
     >
+      {loading && (
+        <div className="loading-overlay">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      )}
       <Row className="justify-content-center">
         <Col md={6} lg={4}>
           <h2 className="text-center mb-4">Registrar</h2>
@@ -86,6 +98,7 @@ function Register() {
                   placeholder="Nome de usuário"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  disabled={loading}
                 />
               </FloatingLabel>
 
@@ -99,6 +112,7 @@ function Register() {
                   placeholder="Digite seu email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
                 />
               </FloatingLabel>
 
@@ -112,6 +126,7 @@ function Register() {
                   placeholder="Senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
               </FloatingLabel>
 
@@ -125,6 +140,7 @@ function Register() {
                   placeholder="Confirme a Senha"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={loading}
                 />
               </FloatingLabel>
 
@@ -138,6 +154,7 @@ function Register() {
                 }}
                 type="submit"
                 className="mt-3 w-100"
+                disabled={loading}
               >
                 Registrar
               </Button>

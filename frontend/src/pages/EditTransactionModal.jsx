@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
+import { Modal, Button, Form, FloatingLabel, Spinner } from "react-bootstrap";
 import { API_URL, transactionTypes } from "../constants";
 import AuthContext from "../context/AuthContext";
 import { getUserProfile } from "../services/authService";
@@ -13,7 +13,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
     description: "",
   });
   const { setUser } = useContext(AuthContext);
-
+  const [loading, setLoading] = useState(false);
   const [transactionTypeOptions, setTransactionsTypeOptions] = useState([]);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (transaction && transaction.id) {
         await axios.patch(
@@ -81,17 +82,13 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               setUser(data);
             });
           });
-
-        // await axios.post(`${API_URL}/finance/transactions/`, formData, {
-        // headers: {
-        // Authorization: `Bearer ${token}`,
-        // },
-        // });
       }
       onSave();
       onClose();
     } catch (error) {
       console.error("Error saving transaction:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,6 +102,13 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {loading && (
+          <div className="loading-overlay">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        )}
         <Form onSubmit={handleSubmit}>
           <FloatingLabel
             controlId="formDescription"
@@ -116,6 +120,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               name="description"
               value={formData.description}
               onChange={handleChange}
+              disabled={loading}
             />
           </FloatingLabel>
           <FloatingLabel controlId="formType" label="Tipo" className="mb-3">
@@ -124,6 +129,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               name="type"
               value={formData.type}
               onChange={handleChange}
+              disabled={loading}
             >
               <option value="income">Ganho</option>
               <option value="expense">Despesa</option>
@@ -138,6 +144,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               name="category"
               value={formData.category}
               onChange={handleCategoryChange}
+              disabled={loading}
             >
               {transactionTypeOptions &&
                 transactionTypeOptions.map((type) => (
@@ -153,6 +160,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               name="amount"
               value={formData.amount}
               onChange={handleChange}
+              disabled={loading}
             />
           </FloatingLabel>
           <div className="d-flex justify-content-end">
@@ -162,10 +170,10 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               type="submit"
               style={{
                 borderColor: "#20c997",
-                // color: "#20c997",
                 backgroundColor: "#20c997",
               }}
               size="sm"
+              disabled={loading}
             >
               Salvar
             </Button>
@@ -174,9 +182,9 @@ const EditTransactionModal = ({ transaction, onClose, onSave, token }) => {
               onClick={onClose}
               style={{
                 borderColor: "#d3557d",
-                // color: "#d3557d",
                 backgroundColor: "#d3557d",
               }}
+              disabled={loading}
             >
               Cancelar
             </Button>

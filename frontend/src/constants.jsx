@@ -1,6 +1,7 @@
 // src/constants.js
 import { faMoneyCheckAlt, faBriefcase, faChartLine, faGift, faHome, faQuestionCircle, faUtensils, faBus, faLightbulb, faHeartbeat, faFilm } from '@fortawesome/free-solid-svg-icons';
-export const API_URL = 'http://127.0.0.1:8000'; // Replace with your API URL
+// export const API_URL = 'http://127.0.0.1:8000'; // Replace with your API URL
+export const API_URL = 'https://dinsage-dot-dinsage.rj.r.appspot.com';
 
 export const transactionTypes = {
     income: [
